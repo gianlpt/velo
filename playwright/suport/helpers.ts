@@ -1,11 +1,10 @@
-export function generateOrderCode() {
-    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    const randomLetters = Array.from({ length: 3 }, () =>
-      letters[Math.floor(Math.random() * letters.length)]
-    ).join('');
-  
-    const randomNumber = Math.floor(Math.random() * 10);
-  
-    return `VLO-${randomLetters}${randomNumber}`;
+export function gerarOrderId() {
+  const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+  let codigo = ''
+
+  for (let i = 0; i < 6; i++) {
+    codigo += caracteres.charAt(Math.floor(Math.random() * caracteres.length))
   }
-  
+
+  return `VLO-${codigo}`
+}
