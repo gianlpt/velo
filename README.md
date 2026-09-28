@@ -23,6 +23,8 @@ Uma SPA (Single Page Application) que permite:
 | **Validação** | Zod |
 | **Data Fetching** | TanStack Query |
 | **Backend** | Supabase (PostgreSQL + Edge Functions) |
+| **Testes E2E** | Playwright (Chromium) |
+| **Qualidade de código** | ESLint e Prettier |
 
 ---
 
@@ -154,7 +156,68 @@ Landing → Configurador → Checkout → Análise de Crédito → Confirmação
 ## Scripts
 
 ```bash
-npm run dev      # Desenvolvimento
-npm run build    # Build de produção
-npm run lint     # Verificar código
+yarn dev           # Desenvolvimento
+yarn build         # Build de produção
+yarn build:dev     # Build em modo de desenvolvimento
+yarn preview       # Visualizar o build localmente
+yarn test          # Executar os testes E2E
+yarn lint          # Verificar código com ESLint
+yarn format        # Formatar o projeto com Prettier
+yarn format:check  # Verificar formatação sem alterar arquivos
 ```
+
+## Testes E2E com Playwright
+
+Os testes ficam em `playwright/e2e`, com configuração em `playwright.config.ts`, e executam no Chromium.
+
+Após instalar as dependências, instale o navegador:
+
+```bash
+yarn playwright install chromium
+```
+
+Com o `.env` configurado, inicie a aplicação em um terminal e mantenha o servidor rodando:
+
+```bash
+yarn dev
+```
+
+A aplicação deve estar disponível em `http://localhost:5173`. O Playwright não inicia o servidor automaticamente na configuração atual.
+
+Em outro terminal, execute:
+
+```bash
+# Todos os testes
+yarn test
+
+# Somente os testes de consulta de pedidos
+yarn test playwright/e2e/pedidos.spec.ts
+
+# Executar com o navegador visível
+yarn test --headed
+
+# Abrir a interface interativa do Playwright
+yarn test --ui
+
+# Listar os testes sem executá-los
+yarn test --list
+
+# Abrir o relatório HTML da última execução
+yarn playwright show-report
+```
+
+Os cenários atuais verificam a disponibilidade da aplicação, a consulta de um pedido aprovado e a mensagem para um pedido inexistente.
+O teste de pedido aprovado depende do pedido `VLO-3NEBZS` com status aprovado no Supabase configurado. Para usar outro pedido, ajuste
+o `orderId` e o `getByTestId` correspondente em `playwright/e2e/pedidos.spec.ts`.
+
+O relatório HTML é gerado em `playwright-report/`, e os artefatos dos testes ficam em `test-results/`. Traces são mantidos em caso de falha.
+
+## Formatação com Prettier
+
+No VS Code, instale ou habilite a extensão **Prettier - Code formatter** (`esbenp.prettier-vscode`), recomendada pelo projeto.
+O arquivo `.vscode/settings.json` define o Prettier como formatador padrão e ativa a formatação ao salvar.
+
+As regras em `.prettierrc.json` usam aspas simples, dispensam ponto e vírgula e definem uma largura preferencial de 145 caracteres.
+O arquivo `.prettierignore` exclui dependências, builds, relatórios e arquivos de lock da formatação.
+
+Para formatar manualmente, use `yarn format`. Para apenas verificar, use `yarn format:check`.

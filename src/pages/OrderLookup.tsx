@@ -86,7 +86,6 @@ const OrderLookup = () => {
                 <Label htmlFor="order-id">Número do Pedido</Label>
                 <Input
                   id="order-id"
-                  data-testid="search-order-id"
                   type="text"
                   placeholder="Ex: VLO-ABC123"
                   value={orderId}
@@ -145,6 +144,7 @@ const OrderLookup = () => {
                   </div>
                 </div>
                 <div
+                  role="status"
                   className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium ${
                     searchedOrder.status === 'APROVADO'
                       ? 'bg-green-100 text-green-700'

@@ -1,0 +1,11 @@
+node_modules/
+.yarn/
+dist/
+dist-ssr/
+playwright-report/
+test-results/
+blob-report/
+playwright/.auth/
+playwright/.cache/
+yarn.lock
+package-lock.json
